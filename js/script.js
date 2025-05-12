@@ -60,6 +60,7 @@ const adicionarTarefa = () =>{
                 <button class="delete-btn">Excluir</button>
             </div>`
 
+
             taskItem.innerHTML = taskHTML;
             taskList.appendChild(taskItem);
 
