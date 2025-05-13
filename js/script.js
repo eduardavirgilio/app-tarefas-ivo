@@ -22,7 +22,7 @@ const carregarTarefas = () => {
         });
 
         taskItem.querySelector('.edit-btn').addEventListener('click', function() {
-            excluirTarefa(this);
+            editarTarefa(this);
         });
 
         taskItem.querySelector('.delete-btn').addEventListener('click', function() {
@@ -39,16 +39,22 @@ const adicionarTarefa = () =>{
 
     console.log(dataTarefa);
 
+    const dataInput = dataTarefa.split('-');
+    console.log(dataInput)
+
     if (tituloTarefa && dataTarefa && horaTarefa){
         //formatar a data
         const taskList = document.querySelector('#taskList');
         const taskItem = document.createElement('div');
         taskItem.classList.add('task-item');
-         const dataFormatada = new Date (dataTarefa).toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit', //se remover isso, fica sem o ano
-         });
+
+        const dataFormatada = `${dataInput[2]}/${dataInput[1]}/${dataInput[0]}`;
+
+        //  const dataFormatada = new Date (dataTarefa).toLocaleDateString('pt-BR', {
+        //     day: '2-digit',
+        //     month: '2-digit',
+        //     year: '2-digit', //se remover isso, fica sem o ano
+        
 
          const taskHTML = `
             <h3>${tituloTarefa}</h3>
@@ -69,7 +75,7 @@ const adicionarTarefa = () =>{
             });
     
             taskItem.querySelector('.edit-btn').addEventListener('click', function() {
-                excluirTarefa(this);
+                editarTarefa(this);
             });
     
             taskItem.querySelector('.delete-btn').addEventListener('click', function() {
@@ -102,4 +108,141 @@ window.onload = function(){
         e.preventDefault();
         adicionarTarefa();
     });
+
+    // Adicionando event listeners para os botões
+  document.querySelector('#adicionarTarefaBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    adicionarTarefa();
+  });
+
+  // Event listeners para os botões de filtro
+  document.querySelector('#filtrarTodasBtn').addEventListener('click', function() {
+    filtrarTarefas('todas');
+  });
+  
+  document.querySelector('#filtrarPendentesBtn').addEventListener('click', function() {
+    filtrarTarefas('pendentes');
+  });
+  
+  document.querySelector('#filtrarConcluidasBtn').addEventListener('click', function() {
+    filtrarTarefas('concluidas');
+  });
+  
+  // Event listeners para os botões de ordenação
+  document.querySelector('#ordenarRecentesBtn').addEventListener('click', function() {
+    ordenarTarefas('recentes');
+  });
+  
+  document.querySelector('#ordenarAntigasBtn').addEventListener('click', function() {
+    ordenarTarefas('antigas');
+  });
+}
+
+const marcarComoConcluida = (button) =>{
+    const taskItem = button.closest('.task-item');
+    console.log(taskItem);
+
+    if (taskItem.classList.contains('concluida')){
+        alert('Esta tarefa já foi concluida!');
+        return;
+    }
+
+    taskItem.classList.add("concluida");
+
+    const editBtn = taskItem.querySelector('.edit-btn');
+    const deleteBtn = taskItem.querySelector('.delete-btn');
+    editBtn.disabled = true;
+    deleteBtn.disabled = true;
+
+    // att localstorage
+
+    const tituloTarefa = taskItem.querySelector('h3').textContent;
+    let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+    const tarefaIndex = tarefas.findIndex(t => t.nome === tituloTarefa);
+    if (tarefaIndex !== -1){
+        tarefas[tarefaIndex].concluida = true;
+        tarefas[tarefaIndex].html = taskItem.innerHTML;
+
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
+    }
+
+    setTimeout(() => {
+        alert('tarefa marcada como concluida')
+    }, 200)
+}
+
+// const editarTarefa = (button) => {
+//     const taskItem = button.closest('.task-item');
+//     console.log(taskItem);
+
+//     const novoTitulo = prompt('Altere o nome do título:');
+//     const novaDescricao = prompt('Altere a descrição:');
+//     const novoHorario = prompt('Altere o horário:');
+//     const novaData = prompt('Altere a data:');
+//     console.log(novoTitulo);
+//     console.log(novaDescricao);
+//     console.log(novoHorario);
+//     console.log(novaData);
+
+//     taskItem.innerHTML = `
+//     <h3>${novoTitulo}</h3>
+//     <p>${novaDescricao}</p>
+//     <p><strong>Vencimento:</strong> às ${novoHorario} do dia ${novaData}</p>
+//     <div class="task-actions">
+//         <button class="complete-btn">Concluir</button>
+//         <button class="edit-btn">Editar</button>
+//         <button class="delete-btn">Excluir</button>
+//     </div>`
+    
+// };
+
+const editarTarefa = (button) => {
+    const taskItem = button.closest('.task-item');
+    const newName = prompt('Edite o nome da tarefa:', taskItem.querySelector('h3').textContent);
+    const newDescription = prompt('Edite a descrição da tarefa:', taskItem.querySelector('p').textContent)
+
+    if (newName) taskItem.querySelector('h3').textContent = newName;
+    if (newDescription) taskItem.querySelector('p').textContent = newDescription;
+
+    
+};
+
+const excluirTarefa = (button) => {
+    if (confirm('Deseja mesmo excluir essa tarefa?')){
+        const taskItem = button.closest('.task-item');
+        const taskName = taskItem.querySelector('h3').textContent;
+
+        let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
+        tarefas = tarefas.filter(t => t.nome !== taskName);
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
+
+        taskItem.remove();
+
+        alert('tarefa excluida.');
+    }
+
+}
+
+const filtrarTarefas = (filtro) => {
+    const tarefas = document.querySelectorAll('.task-item');
+    console.log(tarefas);
+    tarefas.forEach(tarefa => {
+        switch(filtro){
+            case 'todas':
+                tarefa.style.display = 'block';
+                break;
+            case 'pendentes':
+                tarefa.style.display = tarefa.classList.contains('concluida') ? 'none' : 'block';
+                break;
+
+            case 'concluidas':
+                tarefa.style.display = tarefa.classList.contains('concluida') ? 'none' : 'block';
+                break;
+        }
+    })
+}
+
+const ordenarTarefas = (ordem) => {
+    // fazer com base na data de mais recentes e antigos
 }
