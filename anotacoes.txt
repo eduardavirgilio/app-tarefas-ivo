@@ -1,2 +1,9 @@
 desativar o container
-desativar os boroes 
+desativar os botoes
+trocar a informação dos botoes
+
+- fazer um btn recuperar tarefas no html
+- dentro do excluir tarefas, eu preciso armazenar no local storage as tarefas que foram excluidas 
+- quando eu clicar no btn de recuperar tarefas, ele vai buscar as tarefas que foram excluidas e armazenadas no local storage
+- vai aparecer em um prompt a lista das tarefas que foram excluidas, ai voce digita o numero da tarefa que deseja recuperar e ele recupera de acordo com isso, retirando do local storage das tarefas pra restaurar e adicionando nas tarefas adicionadas novamente
+ 
