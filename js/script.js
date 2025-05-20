@@ -51,8 +51,8 @@ const adicionarTarefa = () => {
       // Código HTML que será injetado na DIV
       const taskHTML = `
         <h3>${taskName}</h3>
-        <p>${taskDescription}</p>
-        <p><strong>Vencimento:</strong> ${dataFormatada} ás ${taskTime}</p>
+        <p class="task-description">${taskDescription}</p>
+        <p class="task-data"><strong>Vencimento:</strong> ${dataFormatada} ás <p class="task-hora">${taskTime}</p></p>
         <div class="task-actions">
             <button class="complete-btn">Concluir</button>
             <button class="edit-btn">Editar</button>
@@ -180,31 +180,34 @@ const excluirTarefa = (button) => {
   if (confirm('Deseja realmente excluir esta tarefa?')) {
     const taskItem = button.closest('.task-item');
     const taskName = taskItem.querySelector('h3').textContent;
-    const taskDescription = document.querySelector('#taskDescription').value;
-    const taskDate = document.querySelector('#taskDate').value;
-    const taskTime = document.querySelector('#taskTime').value;
+    // pegando os itens pra add no array
+    const taskDescription = taskItem.querySelector('.task-description').textContent;
+    const taskDate = taskItem.querySelector('.task-data').textContent;
+    const taskTime = taskItem.querySelector('.task-hora').textContent;
 
     let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+    // criando uma lista para as tarefas excluidas
     let tarefasExcluidas = JSON.parse(localStorage.getItem('tarefasExcluidas')) || [];
 
     tarefas = tarefas.filter(t => t.nome !== taskName);
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
+    // adiciona no array
     tarefasExcluidas.push({
       nome: taskName,
       descricao: taskDescription,
       data: taskDate,
-      hora: taskTime
+      hora: taskTime,
       });
 
+    // atualiza o local storage com as tarefas excluidas
     localStorage.setItem('tarefasExcluidas', JSON.stringify(tarefasExcluidas));
 
     taskItem.remove();
 
-    alert('Tarefa excluida.');
+    alert('Tarefa movida para a lixeira, você pode restaurar.');
   }
 
-  
 }
 
 
@@ -292,3 +295,10 @@ const ordenarTarefas = (ordem) => {
   tarefas.forEach(tarefa => taskList.appendChild(tarefa));
 }
 
+const mostrarTarefasExcluidas = () =>{
+
+}
+
+const restaurarTarefa = () =>{
+
+}
