@@ -2,6 +2,10 @@ desativar o container
 desativar os botoes
 trocar a informação dos botoes
 
+- alterar o editar no local storage
+- utilizar sweet alert
+
+
 - fazer um btn recuperar tarefas no html
 - dentro do excluir tarefas, eu preciso armazenar no local storage as tarefas que foram excluidas 
 - quando eu clicar no btn de recuperar tarefas, ele vai buscar as tarefas que foram excluidas e armazenadas no local storage

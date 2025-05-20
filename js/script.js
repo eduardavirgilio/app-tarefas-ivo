@@ -174,82 +174,38 @@ const editarTarefa = (button) => {
   taskItem.querySelector('p').innerHTML = prompt('Nova descrição')
 }
 
-// Excluir tarefa
-// const excluirTarefa = (button) => {
-
-//   if (confirm('Deseja realmente excluir esta tarefa?')) {
-//     const taskItem = button.closest('.task-item');
-//     const taskName = taskItem.querySelector('h3').textContent;
-
-//     let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-
-//     tarefas = tarefas.filter(t => t.nome !== taskName);
-//     localStorage.setItem('tarefas', JSON.stringify(tarefas));
-
-//     taskItem.remove();
-
-//     alert('Tarefa excluida.');
-//   }
-
-  
-// }
-
+//Excluir tarefa
 const excluirTarefa = (button) => {
-<<<<<<< HEAD
+
   if (confirm('Deseja realmente excluir esta tarefa?')) {
     const taskItem = button.closest('.task-item');
     const taskName = taskItem.querySelector('h3').textContent;
-    const taskDescription = taskItem.querySelector('p').textContent;
-    const taskDate = taskItem.querySelector('p').nextElementSibling.textContent.split(' às ')[0];
-    const taskTime = taskItem.querySelector('p').nextElementSibling.textContent.split(' às ')[1];
+    const taskDescription = document.querySelector('#taskDescription').value;
+    const taskDate = document.querySelector('#taskDate').value;
+    const taskTime = document.querySelector('#taskTime').value;
 
     let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
     let tarefasExcluidas = JSON.parse(localStorage.getItem('tarefasExcluidas')) || [];
 
-    // Remover tarefa das tarefas existentes
     tarefas = tarefas.filter(t => t.nome !== taskName);
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
-    // Adicionar tarefa à lista de tarefas excluídas
     tarefasExcluidas.push({
       nome: taskName,
       descricao: taskDescription,
       data: taskDate,
-      hora: taskTime,
-      html: taskItem.innerHTML
-    });
+      hora: taskTime
+      });
 
-    // Atualizar o localStorage com as tarefas excluídas
     localStorage.setItem('tarefasExcluidas', JSON.stringify(tarefasExcluidas));
 
-    // Remover a tarefa da interface
     taskItem.remove();
 
-    alert('Tarefa excluída.');
+    alert('Tarefa excluida.');
   }
+
+  
 }
-
-=======
-
-    if (confirm('Deseja realmente excluir esta tarefa?')) {
-      const taskItem = button.closest('.task-item');
-      const taskName = taskItem.querySelector('h3').textContent;
-  
-      let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-  
-      tarefas = tarefas.filter(t => t.nome !== taskName);
-      localStorage.setItem('tarefas', JSON.stringify(tarefas));
-
-      
-  
-      taskItem.remove();
-  
-      alert('Tarefa excluida.');
-    }
-  
-    
-  }
->>>>>>> a3fb359bfef47e5404d8b6749cd46e45540060b5
 
 
 // Filtrar tarefas
