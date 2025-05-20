@@ -195,6 +195,7 @@ const editarTarefa = (button) => {
 // }
 
 const excluirTarefa = (button) => {
+<<<<<<< HEAD
   if (confirm('Deseja realmente excluir esta tarefa?')) {
     const taskItem = button.closest('.task-item');
     const taskName = taskItem.querySelector('h3').textContent;
@@ -228,6 +229,27 @@ const excluirTarefa = (button) => {
   }
 }
 
+=======
+
+    if (confirm('Deseja realmente excluir esta tarefa?')) {
+      const taskItem = button.closest('.task-item');
+      const taskName = taskItem.querySelector('h3').textContent;
+  
+      let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+  
+      tarefas = tarefas.filter(t => t.nome !== taskName);
+      localStorage.setItem('tarefas', JSON.stringify(tarefas));
+
+      
+  
+      taskItem.remove();
+  
+      alert('Tarefa excluida.');
+    }
+  
+    
+  }
+>>>>>>> a3fb359bfef47e5404d8b6749cd46e45540060b5
 
 
 // Filtrar tarefas
